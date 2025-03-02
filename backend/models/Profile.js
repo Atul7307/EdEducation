@@ -4,7 +4,7 @@ const ProfileSchema = new mongoose.Schema({
     gender:{
         type: String,
     },
-    dateofbirth:{
+    dateofBirth:{
         type: String,
     },
     contactNumber:{

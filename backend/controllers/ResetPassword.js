@@ -108,7 +108,8 @@ exports.resetPassword = async (req, res) => {
     } catch (error) {
         return res.json({
             success: false,
-            message: ""
+            message: "something went to wrong while reset password",
+            error,
         })
 
     }
