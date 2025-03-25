@@ -78,7 +78,7 @@ exports.paymentSuccessEmail = (name, amount, orderId, paymentId) => {
                   <p>Your Order ID is <b>${orderId}</b></p>
               </div>
               <div class="support">If you have any questions or need assistance, please feel free to reach out to us at <a
-                      href="mailto: yashchoudhary52003@gmail.com ">info@studynotion.com</a>. We are here to help!</div>
+                      href="mailto: atulkesharwani7307@gmail.com ">info@studynotion.com</a>. We are here to help!</div>
           </div>
       </body>
   

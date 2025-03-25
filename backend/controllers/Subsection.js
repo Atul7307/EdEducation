@@ -55,7 +55,7 @@ exports.createSubSection = async (req, res) => {
 
 
 // update SubSection
-export const updateSubSection = async (req, res) => {
+exports.updateSubSection = async (req, res) => {
     try {
         // fetch the data from req body and params
         const { title, description, timeDuration } = req.body;
@@ -105,7 +105,7 @@ export const updateSubSection = async (req, res) => {
 
 
 // delete SubSection
-export const deleteSubSection = async (req, res) => {
+exports.deleteSubSection = async (req, res) => {
     try {
 
         // fetch the id from params

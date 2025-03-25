@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 const mailSender = require('../utils/mailSender');
+const otpTemplate = require('../mail/templates/emailVerificationTemplate');
+require('dotenv').config();
 
 const OTPSchema = new mongoose.Schema({
     email: {
@@ -21,7 +23,7 @@ const OTPSchema = new mongoose.Schema({
 // send mail function
 async function sendVerificationEmail(email, otp) {
     try {
-        const mailResponse = await mailSender(email, 'Verification Email from EdEducation', otp);
+        const mailResponse = await mailSender(email, 'Verification Email from EdEducation', otpTemplate(otp));
         console.log("Email sent successfully: ", mailResponse);
 
     } catch (error) {

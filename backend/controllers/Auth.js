@@ -85,6 +85,8 @@ exports.signup = async (req, res) => {
             contactNumber,
             otp
         } = req.body;
+        
+        console.log(req.body)
 
         // validatation
         if (!firstName || !lastName || !email || !password || !confirmPassword || !otp) {
@@ -113,7 +115,7 @@ exports.signup = async (req, res) => {
 
         // find most recent OTP stored for the user
         const recentOtp = await OTP.find({ email }).sort({ createddAt: -1 }).limit(1);
-        console.log(recentOtp)
+        console.log("recent OTP: ", recentOtp)
 
         // validate OTP 
         if (recentOtp.length == 0) {
@@ -123,7 +125,7 @@ exports.signup = async (req, res) => {
                 message: "OTP not found"
             })
         }
-        else if (recentOtp != otp) {
+        else if (recentOtp[0].otp != otp) {
             // Invalid otp 
             return res.status(400).json({
                 success: false,
@@ -136,7 +138,7 @@ exports.signup = async (req, res) => {
 
         // entry create in DB
         const profileDetail = await Profile.create({
-            gender: null,
+            gender: "",
             dateofBirth: null,
             about: null,
             contactNumber: null
@@ -148,7 +150,7 @@ exports.signup = async (req, res) => {
             contactNumber,
             password: hashedPassword,
             accountType,
-            additionalDetails: profileDetail._id,
+            additionalDetail: profileDetail._id,
             image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`
         })
 
@@ -186,13 +188,19 @@ exports.login = async (req, res) => {
         }
 
         // check user exist or not
-        const user = User.findOne({ email }).populate("AdditionalDetails");
+        const user = await User.findOne({ email });
         if (!user) {
             return res.status(401).json({
                 success: false,
                 message: "User is not exist ! Please signup first"
             })
         }
+        console.log(user)
+
+        // Ensure password exists before comparing
+    if (!user.password) {
+        return res.status(500).json({ success: false, message: "Password not stored in DB" });
+      }
 
         // generate JWT , after password matching
         if (await bcrypt.compare(password, user.password)) {
@@ -231,7 +239,8 @@ exports.login = async (req, res) => {
         console.log("Login Process Fail Error :", error)
         return res.status(500).json({
             success: false,
-            message: "Login failure ! Please Try Again"
+            message: "Login failure ! Please Try Again",
+            error: error.message
         })
     }
 }
